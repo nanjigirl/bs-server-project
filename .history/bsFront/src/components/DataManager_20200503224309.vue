@@ -1,0 +1,193 @@
+<template>
+  <el-row class="wrap">
+    <el-col :span="24" class="toolbar" style="padding-bottom:0px;">
+      <!--form表单-->
+      <el-form :inline="true">
+        <el-form-item label="数据类别">
+          <el-select v-model="form.region" placeholder="--请选择--" @change="handleTableName">
+            <!-- <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option> -->
+            <el-option v-for="(item, i) in dataType" :key="i" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="时间区间">
+          <el-col :span="11">
+            <el-date-picker
+              type="datetime"
+              format = "yyyy-MM-dd HH:mm"
+              placeholder="选择日期"
+              v-model="form.date1"
+              style="width: 100%;"
+            ></el-date-picker>
+          </el-col>
+          <el-col class="line" :span="2">-</el-col>
+          <el-col :span="11">
+            <el-date-picker
+              type="datetime"
+              format = "yyyy-MM-dd HH:mm"
+              placeholder="选择日期"
+              v-model="form.date2"
+              style="width: 100%;"
+            ></el-date-picker>
+          </el-col>
+        </el-form-item>
+      </el-form>
+
+      <!--折线图-->
+      <line-chart :table-title="title" :height="400" :xData="xData" :yData="yData"></line-chart>            
+    </el-col>
+  </el-row>
+</template>
+
+<script>
+import LineChart from "./ChartApi/LineChart.vue";
+// let { xData, yData } = require("./../mock/DataManager.json");
+export default {
+  data() {
+    return {
+      //form控件
+      dataType: [
+        {
+          label: '通电电位',
+          value: 'cp',
+        },
+        {
+          label: '阴极保护电位',
+          value: 'pop',
+        },
+        {
+          label: '自腐蚀电位',
+          value: 'np',
+        },
+        {
+          label: '交流AK029+341',
+          value: 'acv',
+        },
+        {
+          label: '交流电流',
+          value: 'acc',
+        },
+        {
+          label: '直流电流',
+          value: 'dc',
+        },
+        {
+          label: '直流电流密度',
+          value: 'dcd',
+        },
+        {
+          label: '交流电流密度',
+          value: 'accd',
+        },
+      ],
+      form: {
+        region: "cp",
+        date1: "",
+        date2: ""
+      },
+      xData: [],
+      yData: [], //图表数据
+      title: '通电电位'
+    };
+  },
+  components: {
+    "line-chart": LineChart
+  },
+  methods: {
+    handleTableName(item) {      
+      let data = this.dataType.filter(val => item === val.value);
+      this.title = data[0].label;      
+    }
+  },
+  mounted() {
+    const that = this;
+    this.xData = ["2020/3/22 00:00:00","2020/3/22 00:00:30","2020/3/22 00:01:00","2020/3/22 00:01:30","2020/3/22 00:02:00","2020/3/22 00:02:30","2020/3/22 00:03:00","2020/3/22 00:03:30","2020/3/22 00:04:00","2020/3/22 00:04:30","2020/3/22 00:05:00","2020/3/22 00:05:30","2020/3/22 00:06:00","2020/3/22 00:06:30","2020/3/22 00:07:00","2020/3/22 00:07:30","2020/3/22 00:08:00","2020/3/22 00:08:30","2020/3/22 00:09:00","2020/3/22 00:09:30","2020/3/22 00:10:00","2020/3/22 00:10:30","2020/3/22 00:11:00","2020/3/22 00:11:30","2020/3/22 00:12:00","2020/3/22 00:12:30","2020/3/22 00:13:00","2020/3/22 00:13:30","2020/3/22 00:14:00","2020/3/22 00:14:30","2020/3/22 00:15:00","2020/3/22 00:15:30","2020/3/22 00:16:00","2020/3/22 00:16:30","2020/3/22 00:17:00","2020/3/22 00:17:30","2020/3/22 00:18:00","2020/3/22 00:18:30","2020/3/22 00:19:00","2020/3/22 00:19:30","2020/3/22 00:20:00","2020/3/22 00:20:30","2020/3/22 00:21:00","2020/3/22 00:21:30","2020/3/22 00:22:00","2020/3/22 00:22:30","2020/3/22 00:23:00","2020/3/22 00:23:30","2020/3/23 00:00:00"];
+    this.yData = [
+          {
+              "name":"管线查询",
+              "type":"line",
+              "smooth": true,
+              "yAxisIndex": 0,
+              "itemStyle" : { "normal": {"label" : {"show": true}}},
+              "data": [-0.856,
+                -0.887,
+                -0.87,
+                -0.894,
+                -0.876,
+                -0.909,
+                -0.871,
+                -0.925,
+                -0.85,
+                -0.899,
+                -0.867,
+                -0.862,
+                -0.905,
+                -0.86,
+                -0.953,
+                -0.94,
+                -0.861,
+                -0.851,
+                -0.79,
+                -0.86,
+                -0.756,
+                -0.798,
+                -0.823,
+                -0.819,
+                -0.835,
+                -0.764,
+                -0.801,
+                -0.884,
+                -0.9,
+                -0.911,
+                -0.846,
+                -0.938,
+                -1.08,
+                -1.111,
+                -1.095,
+                -1.065,
+                -1.11,
+                -1.134,
+                -1.093,
+                -1.1,
+                -1.055,
+                -1.079,
+                -1.093,
+                -1.047,
+                -1.104,
+                -1.067,
+                -1.068,
+                -1.074,
+                -1.097,
+                -1.039
+              ]
+          }
+        ]
+    this.$axios.get('api/manager').then(response => {
+      const res = response.data || {};
+      that.$set({
+        xData: res.xData || [],
+        yData: [
+          {
+              "name":"管线查询",
+              "type":"line",
+              "smooth": true,
+              "yAxisIndex": 0,
+              "data": res.yData || []
+          }
+        ]
+      })
+    });
+  }
+};
+</script>
+<style>
+.toolbar {
+  text-align: left;
+}
+.line {
+    text-align: center;
+}
+.toolbar /deep/ .el-form--inline .el-form-item {
+  margin-right: 100px;
+}
+</style>
