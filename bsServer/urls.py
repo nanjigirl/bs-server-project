@@ -3,5 +3,5 @@ from bsServer import views
 
 urlpatterns = [
     url('^index/$', views.index),
-    url('^manager/$', views.manager_data)
+    url('^api/manager/$', views.manager_data)
 ]
